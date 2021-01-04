@@ -14,9 +14,6 @@ sudo apt update && sudo apt install yq -y
 # Install Flux
 curl -s https://toolkit.fluxcd.io/install.sh | sudo bash
 
-# Set the vm.max_map_count to 262144. 
-# Required for Elastic to run correctly without OOM errors.
-sysctl -w vm.max_map_count=262144
 
 # Remove any old Docker items
 sudo apt remove docker docker-engine docker.io containerd runc
@@ -45,5 +42,14 @@ YOURPUBLICEC2IP=$( curl https://ipinfo.io/ip )
 k3d cluster create k3d -s 1 -a 3  --k3s-server-arg "--disable=traefik" --k3s-server-arg "--disable=metrics-server" --k3s-server-arg "--tls-san=$YOURPUBLICEC2IP"  -p 80:80@loadbalancer -p 443:443@loadbalancer
 
 # Update kubeconfig
-su - ubuntu -c 'mkdir ~/.k3d/'
 su - ubuntu -c 'k3d kubeconfig merge k3d --switch-context -o /home/ubuntu/.kube/config'
+
+# Install sops
+sudo wget -c $( curl -s https://api.github.com/repos/mozilla/sops/releases/latest 2>/dev/null |  jq -r '.assets[] | select(.browser_download_url | contains(\"linux\")) | .browser_download_url' ) -O /usr/local/bin/sops
+sudo chmod +x /usr/local/bin/sops
+
+# Install k9s
+sudo wget https://github.com/derailed/k9s/releases/download/v0.24.2/k9s_Linux_x86_64.tar.gz
+sudo tar -xvf k9s_Linux_x86_64.tar.gz
+sudo mv k9s /usr/local/bin/k9s
+
