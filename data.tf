@@ -1,7 +1,18 @@
+data "external" "whatismyip" {
+  program = ["/bin/bash" , "files/whatismyip.sh"]
+}
+
+data "external" "whoiamuser" {
+  program = ["/bin/bash" , "files/whoami.sh"]
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 data "aws_ami" "ubuntu_linux" {
   most_recent = true
 
-  owners = ["099720109477"]
+  owners = var.amiowner
 
   filter {
     name = "name"
