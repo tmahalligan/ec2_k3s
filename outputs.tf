@@ -1,3 +1,4 @@
 output "External_IP" {
-  value = aws_spot_instance_request.k3dhost.public_ip
+  value = aws_eip.ip_k3d.public_ip
 }
+

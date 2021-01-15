@@ -6,6 +6,7 @@ variable "aws_region" {
 variable "owner" {
   type    = string
   default = "tommy"
+#  default = format("%s",data.external.whatismyip.result,"whoiamuser")
 
 }
 

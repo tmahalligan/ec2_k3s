@@ -1,9 +1,6 @@
-data "external" "whatismyip" {
-  program = ["/bin/bash" , "files/whatismyip.sh"]
-}
-
 resource "aws_security_group" "k3dhost" {
   name_prefix = "k3dhost"
+  vpc_id      = module.vpc.vpc_id
 
 
   ingress {

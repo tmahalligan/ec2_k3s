@@ -1,3 +1,11 @@
+data "external" "whatismyip" {
+  program = ["/bin/bash" , "files/whatismyip.sh"]
+}
+
+data "external" "whoiamuser" {
+  program = ["/bin/bash" , "files/whoami.sh"]
+}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
